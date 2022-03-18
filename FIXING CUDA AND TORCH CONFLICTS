@@ -1,0 +1,28 @@
+ERROR: ModuleNotFoundError: No module named 'torch'
+UPON FIX> ERROR: CUDA must be available in order to use PackageName
+
+The problem I had was overlapping / conflicting installations of PyTorch and Torch. I had both of the cpuonly versions, as well as the cudatoolkit versions installed on my system, because I was not working within a separate environment. After reading about Conda Environments, it became clear what had happened, as installing things repeatedly into the root directory of conda is just poor management, and makes things very cluttered quickly. This makes it very easy to screw up different installations, especially if those installations require different versions of the same dependency (which is how I broke things). 
+After trying to figure out what exactly was causing the errors for a day, I decided a fresh install was in order as I realized the sheer amount of things that could potentially go wrong. 
+
+- Opened Anaconda Prompt and used 
+> conda install anaconda-clean
+> anaconda-clean --yes
+
+- Uninstalled Anaconda3, all of Python
+- Deleted related folders in C:\Users\username : .conda , .Anaconda3 , .python , etc
+(Optional: use CCleaner to clean the registry of any changes left behind)
+- Restarted host machine
+- Reinstalled Anaconda3, adding it to PATH
+- Opened Anaconda Prompt and used 
+> conda update --all
+
+- Created a new environment for the first bit of software I wanted to install:
+> conda create -n "MyNewEnv" python="3.8" \
+> conda activate "MyNewEnv"
+(MyNewEnv)> conda install -PackageName-
+(MyNewEnv)> pip install -PackageName-
+
+- Upon running the software from here, no conflicting/overlapping dependencies, and it worked perfectly
+- Created separate environments for all other software and packages I wanted to install, and installed their dependencies inside of them, respectively
+
+All software now works without flaw, and without having to worry about conflicting dependencies causing issues. 
